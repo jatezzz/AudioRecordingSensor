@@ -38,6 +38,7 @@ void setup() {
   //
   Serial.begin(9600);
   Serial.println("iniciando");
+  Serial.println(segundo);
    //
   val=EEPROM.read(address);
   Serial.print(address);
@@ -74,114 +75,29 @@ void loop() {
   Serial.println("esperando");
   //espera hasta que se presione el pulsador
   digitalWrite(estado,HIGH);
-  while(digitalRead(7)==HIGH){
-    delay(10);
-  }
+//  while(digitalRead(7)==HIGH){
+//    delay(10);
+//  }
+v=1;
+    while(v==1){
+      delay(10);
+      if(digitalRead(7)==HIGH){
+        val=0;
+        EEPROM.write(address, val);
+        }
+    }
+v=0;
   digitalWrite(estado,LOW);
   delay(100);
     
 Serial.println("grabando");
-//
-////Consigo tiempo-
-//    RTC.getTime();
-//    hor=RTC.hour;
-//    minu=RTC.minute;
-//    dia=RTC.day;
-//    mes=RTC.month;
-//    ano=RTC.year;
-      //if (hor < 10)                    // correct hour if necessary
-//      {
-//        
-//        Serial.print("0");
-//        Serial.print(RTC.hour, DEC);
-//      } 
-//      else
-//      {
-//        Serial.print(RTC.hour, DEC);
-//      }
-//      Serial.print(":");
-//      if (RTC.minute < 10)                  // correct minute if necessary
-//      {
-//        Serial.print("0");
-//        Serial.print(RTC.minute, DEC);
-//      }
-//      else
-//      {
-//        Serial.print(RTC.minute, DEC);
-//      }
-//      Serial.print(":");
-//      if (RTC.second < 10)                  // correct second if necessary
-//      {
-//        Serial.print("0");
-//        Serial.print(RTC.second, DEC);
-//      }
-//      else
-//      {
-//        Serial.print(RTC.second, DEC);
-//      }
-//      Serial.print(" ");
-//      if (RTC.day < 10)                    // correct date if necessary
-//      {
-//        Serial.print("0");
-//        
-//        Serial.print(RTC.day, DEC);
-//        //nombre+=0;
-//      }
-//      else
-//      {
-//        Serial.print(RTC.day, DEC);
-//      }
-//      //nombre+=RTC.day;
-//      //nombre.concat("-");
-//      Serial.print("-");
-//      
-//      if (RTC.month < 10)                   // correct month if necessary
-//      {
-//        Serial.print("0");
-//        Serial.print(RTC.month, DEC);
-//        //nombre+=0;
-//      }
-//      else
-//      {
-//        Serial.print(RTC.month, DEC);
-//      }
-//      Serial.print("-");
-//      //nombre+=RTC.month;
-//      //nombre.concat("-");
-//      Serial.print(RTC.year, DEC);          // Year need not to be changed
-//      //nombre+=RTC.year;
-//      Serial.print(" ");
-//      switch (RTC.dow)                      // Friendly printout the weekday
-//      {
-//        case 1:
-//          Serial.print("MON");
-//          break;
-//        case 2:
-//          Serial.print("TUE");
-//          break;
-//        case 3:
-//          Serial.print("WED");
-//          break;
-//        case 4:
-//          Serial.print("THU");
-//          break;
-//        case 5:
-//          Serial.print("FRI");
-//          break;
-//        case 6:
-//          Serial.print("SAT");
-//          break;
-//        case 0:
-//          Serial.print("SUN");
-//          break;
-//      }
-//      Serial.print("\n");
-//---------------
-  
 //leo eeprom
 String nombre = "record";
   nombre+=val;
   val++;
+  if(val==100){
+    val=0;
+    }
   EEPROM.write(address, val);
   nombre.concat(".txt");
   myFile = SD.open(nombre, FILE_WRITE);
@@ -198,20 +114,33 @@ String nombre = "record";
       myFile.println(ano);
       myFile.print("Hora: ");
       myFile.print(hor);
-      myFile.print(":");
+      myFile.print("H");
       myFile.print(minu);
-      myFile.print(":");
-      myFile.println(segundo);
+      myFile.print("Min");
+      myFile.print(segundo);
+      myFile.println("Seg");
       
       v=1;//digitalRead(7);
       while(v==1){
-      //sensorValue = ;
-      myFile.println(analogRead(0));
-      //v=digitalRead(7);
+        myFile.println(analogRead(0));
       }
+      
       myFile.close();
-      v=0;
+      digitalWrite(estado,HIGH);
+      digitalWrite(error,HIGH);
       delay(200);
+      digitalWrite(estado,LOW);
+      digitalWrite(error,LOW);
+      delay(100);
+       digitalWrite(estado,HIGH);
+      delay(200);
+      digitalWrite(estado,LOW);
+      delay(100);
+       digitalWrite(estado,HIGH);
+      delay(200);
+      digitalWrite(estado,LOW);
+      delay(100);
+      v=0;
     }else{
       digitalWrite(error,HIGH);
       }
