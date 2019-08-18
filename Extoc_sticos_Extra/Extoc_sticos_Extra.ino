@@ -38,7 +38,6 @@ void setup() {
   //
   Serial.begin(9600);
   Serial.println("iniciando");
-  Serial.println(segundo);
    //
   val=EEPROM.read(address);
   Serial.print(address);
@@ -75,29 +74,18 @@ void loop() {
   Serial.println("esperando");
   //espera hasta que se presione el pulsador
   digitalWrite(estado,HIGH);
-//  while(digitalRead(7)==HIGH){
-//    delay(10);
-//  }
-v=1;
-    while(v==1){
-      delay(10);
-      if(digitalRead(7)==HIGH){
-        val=0;
-        EEPROM.write(address, val);
-        }
-    }
-v=0;
+  while(digitalRead(7)==HIGH){
+    delay(10);
+  }
   digitalWrite(estado,LOW);
   delay(100);
     
 Serial.println("grabando");
+
 //leo eeprom
 String nombre = "record";
   nombre+=val;
   val++;
-  if(val==100){
-    val=0;
-    }
   EEPROM.write(address, val);
   nombre.concat(".txt");
   myFile = SD.open(nombre, FILE_WRITE);
@@ -114,33 +102,20 @@ String nombre = "record";
       myFile.println(ano);
       myFile.print("Hora: ");
       myFile.print(hor);
-      myFile.print("H");
+      myFile.print(":");
       myFile.print(minu);
-      myFile.print("Min");
-      myFile.print(segundo);
-      myFile.println("Seg");
+      myFile.print(":");
+      myFile.println(segundo);
       
       v=1;//digitalRead(7);
       while(v==1){
-        myFile.println(analogRead(0));
+      //sensorValue = ;
+      myFile.println(analogRead(0));
+      //v=digitalRead(7);
       }
-      
       myFile.close();
-      digitalWrite(estado,HIGH);
-      digitalWrite(error,HIGH);
-      delay(200);
-      digitalWrite(estado,LOW);
-      digitalWrite(error,LOW);
-      delay(100);
-       digitalWrite(estado,HIGH);
-      delay(200);
-      digitalWrite(estado,LOW);
-      delay(100);
-       digitalWrite(estado,HIGH);
-      delay(200);
-      digitalWrite(estado,LOW);
-      delay(100);
       v=0;
+      delay(200);
     }else{
       digitalWrite(error,HIGH);
       }
